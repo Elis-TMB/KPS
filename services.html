@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Services | KPS</title>
+  <style>
+    /* Loading Animation */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #ddd;
+      border-top: 6px solid #007BFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* General layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      z-index: -1;
+    }
+
+    .content-overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header and nav */
+    header {
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1002;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Navigation Container */
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* Main Navigation - Horizontal for desktop */
+    .main-nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    /* Mobile Navigation Styles */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(135deg, #0056b3 0%, #004080 100%);
+      padding: 100px 30px 30px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1001;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+    }
+
+    .mobile-nav.active {
+      transform: translateX(0);
+    }
+
+    .mobile-nav .nav-link {
+      display: block;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mobile-nav .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .mobile-nav .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .mobile-nav .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav .nav-link.active {
+      background-color: #003366;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Overlay for mobile menu */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Desktop Navigation Links */
+    .nav-link {
+      color: white;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: #a8d1f7;
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link.active {
+      background-color: #004494;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sign-in button */
+    .sign-btn {
+      padding: 12px 24px;
+      border: 2px solid white;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      background: transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .sign-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: white;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    .sign-btn:hover:before {
+      width: 100%;
+    }
+
+    .sign-btn:hover {
+      color: #007BFF;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 40px 20px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, #007BFF, #004080);
+    }
+
+    .hero h1 {
+      font-size: 2.8em;
+      color: #004080;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero h2 {
+      font-size: 1.8em;
+      color: #007BFF;
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      color: #555;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Services Section */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 20px;
+    }
+
+    .service {
+      max-width: 300px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      flex: 1 1 280px;
+    }
+
+    .service:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .service img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .service h2 {
+      padding: 25px 25px 10px;
+      color: #004080;
+      font-size: 1.8em;
+      position: relative;
+    }
+
+    .service h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25px;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #007BFF, #004080);
+      border-radius: 2px;
+    }
+
+    .service p {
+      padding: 15px 25px 30px;
+      color: #555;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .service-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 123, 255, 0.9);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      text-align: center;
+    }
+
+    .service:hover .service-overlay {
+      opacity: 1;
+    }
+
+    .service-overlay h3 {
+      margin-bottom: 10px;
+      font-size: 1.5em;
+    }
+
+    .service-overlay p {
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .login-prompt-btn {
+      background: white;
+      color: #007BFF;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .login-prompt-btn:hover {
+      background: #f8f9fa;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: linear-gradient(135deg, #0077cc 0%, #0056b3 100%);
+      color: white;
+      margin-top: auto;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 2.5em;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Show hamburger and hide desktop nav on mobile */
+      .hamburger {
+        display: flex;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: flex;
+      }
+
+      header {
+        padding: 15px 20px;
+        justify-content: space-between;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .nav-container {
+        display: none;
+      }
+
+      .hero {
+        padding: 40px 20px;
+        margin-bottom: 40px;
+      }
+      
+      .hero h1 {
+        font-size: 2.5em;
+      }
+      
+      .hero h2 {
+        font-size: 2.2em;
+      }
+      
+      .hero p {
+        font-size: 1.1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.8em;
+      }
+      
+      .hero h2 {
+        font-size: 1.3em;
+      }
+      
+      .hero p {
+        font-size: 1em;
+      }
+      
+      .service h2 {
+        font-size: 1.7em;
+      }
+      
+      .service p {
+        font-size: 1em;
+      }
+      
+      .mobile-nav {
+        width: 250px;
+        padding: 90px 20px 30px;
+      }
+      
+      .mobile-nav .nav-link {
+        font-size: 16px;
+        padding: 12px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+  </div>
+  
+  <div id="site-header"></div>
+
+  <div class="background"></div>
+
+  <div class="content-overlay">
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link active">Products / Services</a>
+      <a href="order.html" class="nav-link">Order/Request Quote</a>
+      <a href="blog.html" class="nav-link">Blog/News</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="ContactUs.html" class="nav-link">Contact Us</a>
+    </nav>
+
+    <header>
+      <img src="images/LOGO.jpg" alt="Logo" class="logo">
+      
+      <div class="nav-container">
+        <nav class="main-nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link active">Products / Services</a>
+          <a href="order.html" class="nav-link">Order/Request Quote</a>
+          <a href="blog.html" class="nav-link">Blog/News</a>
+          <a href="faq.html" class="nav-link">FAQ</a>
+          <a href="ContactUs.html" class="nav-link">Contact Us</a>
+        </nav>
+      </div>
+      
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Our Products / Services</h1>
+        <p>Explore our wide range of professional solutions tailored to your needs.</p>
+      </section>
+
+      <section class="services">
+        <div class="service">
+          <img src="images/poster.jpg" alt="Poster Printing">
+          <h2>Printing</h2>
+          <p>High-quality, vibrant printing</p>
+          <div class="service-overlay">
+            <h3>Printing</h3>
+            <a href="order.html" class="login-prompt-btn">Order</a>
+          </div>
+        </div>
+
+        <div class="service">
+          <img src="images/stationery.jpg" alt="Business Cards">
+          <h2>Stationery Supplies</h2>
+          <p>Professional and customizable stationery supplies to help make a lasting impression.</p>
+          <div class="service-overlay">
+            <h3>Stationery Supplies</h3>
+            <a href="order.html" class="login-prompt-btn">Order</a>
+          </div>
+        </div>
+
+        <div class="service">
+          <img src="images/oe.jpg" alt="T-Shirt Printing">
+          <h2>Office Equipments</h2>
+          <p>We have best quality offices equipments.</p>
+          <div class="service-overlay">
+            <h3>Office Equipments</h3>
+            <a href="order.html" class="login-prompt-btn">Order</a>
+          </div>
+        </div>
+
+        <div class="service">
+          <img src="images/ed.jpeg" alt="Flyer Printing">
+          <h2>Electronic Devices</h2>
+          <p>Affordable electronic devices for your professional works.</p>
+          <div class="service-overlay">
+            <h3>Electronic Devices</h3>
+            <a href="order.html" class="login-prompt-btn">Order</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2026 KPS. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const body = document.body;
+
+    // Toggle mobile menu
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+      body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking overlay
+    menuOverlay.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileNav.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav link
+    const mobileNavLinks = mobileNav.querySelectorAll('.nav-link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      });
+    });
+
+    // Close menu on window resize (if resized to desktop)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      }
+    });
+
+    // Set active nav link based on current page
+    function setActiveNavLink() {
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage === '/' && linkHref === 'index.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Call when page loads
+    window.addEventListener('DOMContentLoaded', setActiveNavLink);
+
+    // Loading screen
+    window.addEventListener('load', function() {
+      document.getElementById('loading').style.display = 'none';
+    });
+  </script>
+</body>
+</html>

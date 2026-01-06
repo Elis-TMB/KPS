@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us | KPS</title>
+  <style>
+    /* Loading Animation */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #ddd;
+      border-top: 6px solid #007BFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* General layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      z-index: -1;
+    }
+
+    .content-overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header and nav */
+    header {
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1002;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Navigation Container */
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* Main Navigation - Horizontal for desktop */
+    .main-nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    /* Mobile Navigation Styles */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(135deg, #0056b3 0%, #004080 100%);
+      padding: 100px 30px 30px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1001;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+    }
+
+    .mobile-nav.active {
+      transform: translateX(0);
+    }
+
+    .mobile-nav .nav-link {
+      display: block;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mobile-nav .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .mobile-nav .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .mobile-nav .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav .nav-link.active {
+      background-color: #003366;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Overlay for mobile menu */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Desktop Navigation Links */
+    .nav-link {
+      color: white;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: #a8d1f7;
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link.active {
+      background-color: #004494;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 60px 20px;
+      background: transparent;
+      text-align: center;
+      flex: 1;
+    }
+
+    .contact-section h1 {
+      font-size: 2.8em;
+      color: #004080;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-section h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #007BFF, transparent);
+    }
+
+    .contact-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: stretch;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .contact-form-container,
+    .contact-info-container {
+      flex: 1 1 420px;
+      max-width: 520px;
+      min-height: 460px;
+      background: white;
+      padding: 36px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease;
+    }
+
+    .contact-form-container { margin-bottom: 0; }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      gap: 12px;
+    }
+
+    .contact-form h3 {
+      margin: 0 0 6px 0;
+      color: #004080;
+      font-size: 26px;
+    }
+
+    .contact-form p {
+      margin: 0 0 12px 0;
+      color: #555;
+    }
+
+    .form-field {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-weight: 600;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .form-control {
+      padding: 10px 12px;
+      border: 1px solid #e0e6ee;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: box-shadow 0.12s ease, border-color 0.12s ease;
+      width: 100%;
+    }
+
+    .form-control:focus {
+      border-color: #007BFF;
+      box-shadow: 0 8px 22px rgba(0,123,255,0.08);
+    }
+
+    .submit-btn {
+      background: linear-gradient(90deg,#007BFF,#004080);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.3s ease;
+      align-self: flex-end;
+    }
+
+    .submit-btn:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-info-container {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .contact-info-container .contact-details {
+      margin-top: 6px;
+    }
+
+    .contact-info-container .contact-item {
+      padding: 18px 14px;
+      text-align: left;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .contact-info-container .contact-icon {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+    }
+
+    .contact-info-container h4 { margin: 0 0 6px 0; }
+
+    .contact-note { 
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .contact-info-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .contact-info-container h3 {
+      margin-bottom: 20px;
+      font-size: 32px;
+      color: #004080;
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-info-container h3:after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #007BFF, #004080);
+      border-radius: 3px;
+    }
+
+    .contact-info-container > p {
+      margin-bottom: 40px;
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .contact-item {
+      flex: 1;
+      min-width: 250px;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .contact-item:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #007BFF 0%, #004080 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: -1;
+    }
+
+    .contact-item:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      color: white;
+    }
+
+    .contact-item:hover:before {
+      opacity: 1;
+    }
+
+    .contact-item:hover h4,
+    .contact-item:hover p {
+      color: white;
+    }
+
+    /* Updated White Icons */
+    .contact-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      transition: all 0.4s ease;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    .contact-icon.email:before {
+      content: "✉";
+      font-size: 45px;
+      color: white;
+      transition: all 0.4s ease;
+    }
+
+    .contact-icon.phone:before {
+      content: "📞";
+      font-size: 45px;
+      color: white;
+      filter: brightness(0) invert(1);
+      transition: all 0.4s ease;
+    }
+
+    .contact-icon.address:before {
+      content: "📍";
+      font-size: 45px;
+      color: white;
+      filter: brightness(0) invert(1);
+      transition: all 0.4s ease;
+    }
+
+    .contact-item:hover .contact-icon {
+      background: linear-gradient(135deg, #004080 0%, #00264d 100%);
+      transform: scale(1.15) rotate(5deg);
+      box-shadow: 0 10px 25px rgba(0, 123, 255, 0.5);
+    }
+
+    .contact-item:hover .contact-icon:before {
+      transform: scale(1.1);
+      color: white;
+    }
+
+    /* Right-column: compact contact rows */
+    .contact-info-container .contact-details .contact-item {
+      background: transparent;
+      box-shadow: none;
+      padding: 12px 8px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+
+    .contact-info-container .contact-item .contact-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0;
+      box-shadow: none;
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .contact-info-container .contact-icon:before {
+      font-size: 20px;
+      line-height: 1;
+      color: white;
+      filter: brightness(0) invert(1);
+    }
+
+    .contact-info-container .contact-item:hover {
+      transform: translateY(-4px);
+      background: rgba(0,123,255,0.04);
+    }
+
+    /* Floating-style labels */
+    .form-field { position: relative; }
+    .form-field label {
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      background: white;
+      padding: 0 6px;
+      font-size: 12px;
+      color: #444;
+      pointer-events: none;
+      border-radius: 6px;
+    }
+
+    .form-control { padding-top: 14px; padding-bottom: 10px; }
+
+    .contact-note {
+      padding: 25px;
+      background: linear-gradient(135deg, #e6f2ff 0%, #d1e7ff 100%);
+      border-radius: 15px;
+      border-left: 6px solid #007BFF;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .contact-note:hover {
+      transform: translateX(5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-note p {
+      margin: 0;
+      font-size: 17px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Footer - AT END OF CONTENT (Like index page) */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: linear-gradient(135deg, #0077cc 0%, #0056b3 100%);
+      color: white;
+      margin-top: auto;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .contact-item {
+        min-width: 200px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Show hamburger and hide desktop nav on mobile */
+      .hamburger {
+        display: flex;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: flex;
+      }
+
+      .nav-container {
+        display: none;
+      }
+
+      header {
+        padding: 15px 20px;
+        justify-content: space-between;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .contact-container {
+        flex-direction: column;
+        padding: 0 10px;
+      }
+
+      .contact-details {
+        flex-direction: column;
+      }
+      
+      .contact-section h1 {
+        font-size: 2.2em;
+      }
+      
+      .contact-info-container {
+        padding: 30px 20px;
+      }
+      
+      .contact-icon {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .contact-icon:before {
+        font-size: 40px;
+      }
+      
+      .contact-info-container h3 {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .contact-section h1 {
+        font-size: 1.8em;
+      }
+      
+      .contact-info-container h3 {
+        font-size: 26px;
+      }
+      
+      .contact-item {
+        padding: 30px 15px;
+      }
+      
+      .contact-icon {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .contact-icon:before {
+        font-size: 35px;
+      }
+      
+      .mobile-nav {
+        width: 250px;
+        padding: 90px 20px 30px;
+      }
+      
+      .mobile-nav .nav-link {
+        font-size: 16px;
+        padding: 12px 15px;
+      }
+      
+      .contact-form-container,
+      .contact-info-container {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+  </div>
+  
+  <div class="background"></div>
+
+  <div class="content-overlay">
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link">Products / Services</a>
+      <a href="order.html" class="nav-link">Order/Request Quote</a>
+      <a href="blog.html" class="nav-link">Blog/News</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="ContactUs.html" class="nav-link active">Contact Us</a>
+    </nav>
+
+    <header>
+      <img src="images/LOGO.jpg" alt="Logo" class="logo">
+      
+      <div class="nav-container">
+        <nav class="main-nav" id="main-nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Products / Services</a>
+          <a href="order.html" class="nav-link">Order/Request Quote</a>
+          <a href="blog.html" class="nav-link">Blog/News</a>
+          <a href="faq.html" class="nav-link">FAQ</a>
+          <a href="ContactUs.html" class="nav-link active">Contact Us</a>
+        </nav>
+      </div>
+      
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="contact-section">
+        <h1>CONTACT US</h1>
+
+        <div class="contact-container">
+          <div class="contact-form-container">
+            <div class="contact-form">
+              <h3>Send Us A Message</h3>
+              <p>Complete the form and we'll get back to you as soon as possible.</p>
+
+              <form id="contactForm">
+                <div class="form-field">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" class="form-control" required />
+                </div>
+
+                <div class="form-field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" class="form-control" required />
+                </div>
+
+                <div class="form-field">
+                  <label for="subject">Subject</label>
+                  <input id="subject" name="subject" class="form-control" />
+                </div>
+
+                <div class="form-field">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" rows="6" class="form-control" required></textarea>
+                </div>
+
+                <div style="text-align:right;margin-top:6px;">
+                  <button type="submit" class="submit-btn">Send Message</button>
+                </div>
+
+                <div id="contactSuccess" style="display:none;margin-top:12px;color:green;font-weight:600;">Message prepared — your email client should open. If not, copy the contents and send to kaentprintsandstationery@gmail.com.</div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Contact Information Container (right column) -->
+          <div class="contact-info-container">
+            <h3>Get In Touch</h3>
+            <p>We'd love to hear from you. Here's how you can reach us:</p>
+            
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="contact-icon email"></div>
+                <h4>Email</h4>
+                <p>kaentprintsandstationery@gmail.com</p>
+              </div>
+              
+              <div class="contact-item">
+                <div class="contact-icon phone"></div>
+                <h4>Phone</h4>
+                <p> +260 975524037 / +260 978611770</p>
+              </div>
+              
+              <div class="contact-item">
+                <div class="contact-icon address"></div>
+                <h4>Address</h4>
+                <p>Lusaka, Zambia</p>
+              </div>
+            </div>
+            
+            <div class="contact-note">
+              <p>Please use the email or phone number above to get in touch with our team. We typically respond within 24 hours. Our office hours are Monday to Friday, 8:00 AM to 5:00 PM.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2026 KPS. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const body = document.body;
+
+    // Toggle mobile menu
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+      body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking overlay
+    menuOverlay.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileNav.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav link
+    const mobileNavLinks = mobileNav.querySelectorAll('.nav-link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      });
+    });
+
+    // Close menu on window resize (if resized to desktop)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      }
+    });
+
+    // Set active nav link based on current page
+    function setActiveNavLink() {
+      const currentPage = window.location.pathname.split('/').pop() || 'ContactUs.html';
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'ContactUs.html') ||
+            (currentPage === '/' && linkHref === 'ContactUs.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Call when page loads
+    window.addEventListener('DOMContentLoaded', setActiveNavLink);
+
+    // Loading screen
+    window.addEventListener('load', function() {
+      document.getElementById('loading').style.display = 'none';
+    });
+
+    // Contact form functionality
+    (function(){
+      var form = document.getElementById('contactForm');
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        var name = document.getElementById('name').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var subject = document.getElementById('subject').value.trim() || ('Message from ' + name || 'Website contact');
+        var message = document.getElementById('message').value.trim();
+        if(!name || !email || !message){
+          alert('Please fill name, email and message.');
+          return;
+        }
+        var to = 'kaentprintsandstationery@gmail.com';
+        var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+        var mailto = 'mailto:' + encodeURIComponent(to) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        // show success hint and open mail client
+        var success = document.getElementById('contactSuccess');
+        if(success) success.style.display = 'block';
+        window.location.href = mailto;
+      });
+    })();
+  </script>
+</body>
+</html>

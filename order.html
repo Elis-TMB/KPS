@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order/Request Quote | KPS</title>
+  <style>
+    /* Loading Animation */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #ddd;
+      border-top: 6px solid #007BFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* General layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #f4f8fc 0%, #e6f2ff 100%);
+      z-index: -1;
+    }
+
+    .content-overlay {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header and nav */
+    header {
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1002;
+      position: relative;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: white;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* Navigation Container */
+    .nav-container {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* Main Navigation - Horizontal for desktop */
+    .main-nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    /* Mobile Navigation Styles */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(135deg, #0056b3 0%, #004080 100%);
+      padding: 100px 30px 30px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 1001;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+      overflow-y: auto;
+    }
+
+    .mobile-nav.active {
+      transform: translateX(0);
+    }
+
+    .mobile-nav .nav-link {
+      display: block;
+      color: white;
+      font-size: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 15px 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mobile-nav .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .mobile-nav .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .mobile-nav .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(5px);
+    }
+
+    .mobile-nav .nav-link.active {
+      background-color: #003366;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Overlay for mobile menu */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Desktop Navigation Links */
+    .nav-link {
+      color: white;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-link:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .nav-link:hover:before {
+      left: 100%;
+    }
+
+    .nav-link:hover {
+      color: #a8d1f7;
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link.active {
+      background-color: #004494;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sign-in button */
+    .sign-btn {
+      padding: 12px 24px;
+      border: 2px solid white;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      background: transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .sign-btn:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: white;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    .sign-btn:hover:before {
+      width: 100%;
+    }
+
+    .sign-btn:hover {
+      color: #007BFF;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 40px 20px;
+    }
+
+    /* Form Section */
+    .form-section {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-section:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, #007BFF, #004080);
+    }
+
+    .form-section h1 {
+      font-size: 2.5em;
+      color: #004080;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-section p {
+      font-size: 1.1em;
+      color: #555;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+
+    .form-group input[type="file"] {
+      padding: 8px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input[type="file"]:hover {
+      border-color: #007BFF;
+    }
+
+    .form-group input[type="file"]:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 5px;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      margin: 0;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: normal;
+      cursor: pointer;
+      padding: 5px 0;
+    }
+
+    .radio-label input[type="radio"] {
+      margin: 0;
+      width: 16px;
+      height: 16px;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: linear-gradient(135deg, #0077cc 0%, #0056b3 100%);
+      color: white;
+      margin-top: auto;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      /* Show hamburger and hide desktop nav on mobile */
+      .hamburger {
+        display: flex;
+      }
+
+      .main-nav {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: flex;
+      }
+
+      header {
+        padding: 15px 20px;
+        justify-content: space-between;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .nav-container {
+        display: none;
+      }
+
+      .form-section {
+        padding: 30px 20px;
+        margin: 0 10px;
+      }
+
+      .form-section h1 {
+        font-size: 2em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-section h1 {
+        font-size: 1.8em;
+      }
+      
+      .form-section p {
+        font-size: 1em;
+      }
+      
+      .mobile-nav {
+        width: 250px;
+        padding: 90px 20px 30px;
+      }
+      
+      .mobile-nav .nav-link {
+        font-size: 16px;
+        padding: 12px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+  </div>
+  
+  <div class="background"></div>
+
+  <div class="content-overlay">
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link">Products / Services</a>
+      <a href="order.html" class="nav-link active">Order/Request Quote</a>
+      <a href="blog.html" class="nav-link">Blog/News</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="ContactUs.html" class="nav-link">Contact Us</a>
+    </nav>
+
+    <header>
+      <img src="images/LOGO.jpg" alt="KPS Logo" class="logo">
+      
+      <div class="nav-container">
+        <div class="main-nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Products / Services</a>
+          <a href="order.html" class="nav-link active">Order/Request Quote</a>
+          <a href="blog.html" class="nav-link">Blog/News</a>
+          <a href="faq.html" class="nav-link">FAQ</a>
+          <a href="ContactUs.html" class="nav-link">Contact Us</a>
+        </div>
+      </div>
+      
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="form-section">
+        <h1>Request a Quote or Place an Order</h1>
+        <p>Fill out the form below to request a quote for our products and services or to place an order. We'll get back to you promptly!</p>
+        <form id="order-form" action="#" method="post">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone">
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" required>
+              <option value="">Select a category</option>
+              <optgroup label="Products">
+                <option value="stationery">Stationery Supplies</option>
+                <option value="office-equipment">Office Equipment</option>
+                <option value="electronic-devices">Electronic Devices</option>
+              </optgroup>
+              <optgroup label="Services">
+                <option value="printing">Printing Services</option>
+                <option value="custom-design">Custom Design</option>
+                <option value="bulk-orders">Bulk Orders</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group" id="printing-options-group" style="display: none;">
+            <label>Printing Type</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="business-cards"> Business Cards
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="flyers"> Flyers
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="banners"> Banners
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="brochures"> Brochures
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="posters"> Posters
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="t-shirts"> T-Shirts
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="printing-option" value="other"> Other (specify in details)
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="design-upload-group" style="display: none;">
+            <label for="design-file">Upload Design File</label>
+            <input type="file" id="design-file" name="design-file" accept=".pdf,.jpg,.jpeg,.png,.ai,.psd,.eps">
+            <small>Accepted formats: PDF, JPG, PNG, AI, PSD, EPS. Max size: 10MB</small>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity (if applicable)</label>
+            <input type="number" id="quantity" name="quantity" min="1">
+          </div>
+          <div class="form-group">
+            <label for="deadline">Preferred Deadline</label>
+            <input type="date" id="deadline" name="deadline">
+          </div>
+          <button type="submit" class="submit-btn">Submit Request</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      &copy; 2026 KPS. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const body = document.body;
+
+    // Toggle mobile menu
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+      body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking overlay
+    menuOverlay.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileNav.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      body.style.overflow = '';
+    });
+
+    // Close menu when clicking a nav link
+    const mobileNavLinks = mobileNav.querySelectorAll('.nav-link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      });
+    });
+
+    // Close menu on window resize (if resized to desktop)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        body.style.overflow = '';
+      }
+    });
+
+    // Set active nav link based on current page
+    function setActiveNavLink() {
+      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        const linkHref = link.getAttribute('href');
+        if (linkHref === currentPage || 
+            (currentPage === '' && linkHref === 'index.html') ||
+            (currentPage === '/' && linkHref === 'index.html')) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // Call when page loads
+    window.addEventListener('DOMContentLoaded', setActiveNavLink);
+
+    // Form functionality
+    function toggleFileUpload() {
+      var radios = document.querySelectorAll('input[name="printing-option"]:checked');
+      var uploadGroup = document.getElementById('design-upload-group');
+      if (radios.length > 0) {
+        uploadGroup.style.display = 'block';
+      } else {
+        uploadGroup.style.display = 'none';
+      }
+    }
+
+    document.getElementById('category').addEventListener('change', function() {
+      var printingOptionsGroup = document.getElementById('printing-options-group');
+      var uploadGroup = document.getElementById('design-upload-group');
+      if (this.value === 'printing') {
+        printingOptionsGroup.style.display = 'block';
+        toggleFileUpload(); // Check if any are already checked
+      } else {
+        printingOptionsGroup.style.display = 'none';
+        uploadGroup.style.display = 'none';
+      }
+    });
+
+    // Add event listeners to radio buttons
+    var radios = document.querySelectorAll('input[name="printing-option"]');
+    radios.forEach(function(radio) {
+      radio.addEventListener('change', toggleFileUpload);
+    });
+
+    // Hide loader when page loads
+    window.addEventListener('load', function() {
+      var loading = document.getElementById('loading');
+      if (loading) {
+        loading.style.display = 'none';
+      }
+    });
+
+    // Send form details to WhatsApp when submitted
+    function sendToWhatsApp(e) {
+      e.preventDefault();
+      var name = document.getElementById('name').value || '';
+      var email = document.getElementById('email').value || '';
+      var phone = document.getElementById('phone').value || '';
+      var categoryEl = document.getElementById('category');
+      var category = categoryEl ? categoryEl.options[categoryEl.selectedIndex].text : '';
+      var printing = (document.querySelector('input[name="printing-option"]:checked') || {}).value || '';
+      var quantity = document.getElementById('quantity').value || '';
+      var deadline = document.getElementById('deadline').value || '';
+      var designFileInput = document.getElementById('design-file');
+      var designFileName = (designFileInput && designFileInput.files && designFileInput.files.length) ? designFileInput.files[0].name : '';
+
+      var message = '';
+      message += 'New order from KPS Website\n';
+      if (name) message += 'Name: ' + name + '\n';
+      if (email) message += 'Email: ' + email + '\n';
+      if (phone) message += 'Phone: ' + phone + '\n';
+      if (category) message += 'Category: ' + category + '\n';
+      if (printing) message += 'Printing option: ' + printing + '\n';
+      if (quantity) message += 'Quantity: ' + quantity + '\n';
+      if (deadline) message += 'Preferred deadline: ' + deadline + '\n';
+      if (designFileName) message += 'Design file: ' + designFileName + '\n';
+
+      var waNumber = '260978611770';
+      var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(message);
+      window.open(waUrl, '_blank');
+      return false;
+    }
+
+    var orderForm = document.getElementById('order-form');
+    if (orderForm) {
+      orderForm.addEventListener('submit', sendToWhatsApp);
+    }
+  </script>
+</body>
+</html>

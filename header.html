@@ -1,0 +1,11 @@
+<header id="shared-header">
+</header>
+<script>
+  (function(){
+    try{
+      var path = location.pathname.split('/').pop() || 'index.html';
+      var links = document.querySelectorAll('#shared-header .nav-link');
+      links.forEach(function(a){ if(a.getAttribute('href') === path) a.classList.add('active'); });
+    }catch(e){/* no-op */}
+  })();
+</script>
