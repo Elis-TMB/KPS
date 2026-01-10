@@ -304,6 +304,165 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
+    /* Product Panels */
+    .product-panels {
+      max-width: 1000px;
+      margin: 0 auto 40px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-panels h1 {
+      text-align: center;
+      color: #007BFF;
+      margin-bottom: 10px;
+      font-size: 2.5em;
+    }
+
+    .product-panels > p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+
+    .panel {
+      margin-bottom: 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .panel:hover {
+      border-color: #007BFF;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .panel-header {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 20px 25px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .panel-header:hover {
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      color: #007BFF;
+      font-size: 1.5em;
+    }
+
+    .panel-toggle {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007BFF;
+      transition: transform 0.3s ease;
+    }
+
+    .panel.active .panel-toggle {
+      transform: rotate(45deg);
+    }
+
+    .panel-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      background: #f8f9fa;
+    }
+
+    .panel.active .panel-content {
+      max-height: 1000px;
+    }
+
+    .panel-description {
+      padding: 20px 25px;
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .panel-description p {
+      margin: 0;
+      color: #666;
+      font-size: 1.1em;
+    }
+
+    .common-items {
+      padding: 25px;
+    }
+
+    .common-items h3 {
+      color: #007BFF;
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .item-checkbox {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95em;
+    }
+
+    .item-checkbox:hover {
+      border-color: #007BFF;
+      background: #f0f8ff;
+    }
+
+    .item-checkbox input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .custom-item {
+      padding: 0 25px 25px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .custom-item h3 {
+      color: #007BFF;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    .custom-item textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1em;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+
+    .custom-item textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
     /* Main Content */
     main {
       flex: 1;
@@ -505,6 +664,33 @@
       .form-section h1 {
         font-size: 2em;
       }
+
+      .product-panels {
+        padding: 20px;
+        margin: 0 10px 20px;
+      }
+
+      .product-panels h1 {
+        font-size: 2em;
+      }
+
+      .panel-header {
+        padding: 15px 20px;
+      }
+
+      .panel-header h2 {
+        font-size: 1.3em;
+      }
+
+      .items-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+      }
+
+      .item-checkbox {
+        padding: 8px 12px;
+        font-size: 0.9em;
+      }
     }
 
     @media (max-width: 480px) {
@@ -525,6 +711,22 @@
         font-size: 16px;
         padding: 12px 15px;
       }
+
+      .product-panels h1 {
+        font-size: 1.8em;
+      }
+
+      .panel-header h2 {
+        font-size: 1.2em;
+      }
+
+      .items-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .item-checkbox {
+        padding: 10px 15px;
+      }
     }
   </style>
 </head>
@@ -543,6 +745,7 @@
     <nav class="mobile-nav" id="mobileNav">
       <a href="index.html" class="nav-link">Home</a>
       <a href="services.html" class="nav-link">Products / Services</a>
+      <a href="about.html" class="nav-link">About Us</a>
       <a href="order.html" class="nav-link active">Order/Request Quote</a>
       <a href="blog.html" class="nav-link">Blog/News</a>
       <a href="faq.html" class="nav-link">FAQ</a>
@@ -550,12 +753,13 @@
     </nav>
 
     <header>
-      <img src="images/LOGO.jpg" alt="KPS Logo" class="logo">
+      <img src="images/LOGO.png" alt="KPS Logo" class="logo">
       
       <div class="nav-container">
         <div class="main-nav">
           <a href="index.html" class="nav-link">Home</a>
           <a href="services.html" class="nav-link">Products / Services</a>
+          <a href="about.html" class="nav-link">About Us</a>
           <a href="order.html" class="nav-link active">Order/Request Quote</a>
           <a href="blog.html" class="nav-link">Blog/News</a>
           <a href="faq.html" class="nav-link">FAQ</a>
@@ -572,9 +776,170 @@
     </header>
 
     <main>
-      <section class="form-section">
+      <!-- Product Selection Panels -->
+      <section class="product-panels">
         <h1>Request a Quote or Place an Order</h1>
-        <p>Fill out the form below to request a quote for our products and services or to place an order. We'll get back to you promptly!</p>
+        <p>Select from our product categories below or specify your custom requirements. We'll get back to you promptly!</p>
+
+        <!-- Stationery Supplies Panel -->
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel('stationery')">
+            <h2>Stationery Supplies</h2>
+            <span class="panel-toggle">+</span>
+          </div>
+          <div id="stationery-panel" class="panel-content">
+            <div class="panel-description">
+              <p>Choose from our wide range of stationery supplies or specify custom items.</p>
+            </div>
+            <div class="common-items">
+              <h3>Common Stationery Items:</h3>
+              <div class="items-grid">
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="notebooks"> Notebooks
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="pens"> Pens & Pencils
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="paper"> Paper (A4, Letter, etc.)
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="folders"> Folders & Files
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="envelopes"> Envelopes
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="staplers"> Staplers & Staples
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="tape"> Tape & Glue
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="markers"> Markers & Highlighters
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="calculators"> Calculators
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="stationery-item" value="scissors"> Scissors & Cutters
+                </label>
+              </div>
+            </div>
+            <div class="custom-item">
+              <h3>Don't see what you need?</h3>
+              <textarea id="custom-stationery" placeholder="Specify other stationery items you require..." rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Electronic Devices Panel -->
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel('electronics')">
+            <h2>Electronic Devices</h2>
+            <span class="panel-toggle">+</span>
+          </div>
+          <div id="electronics-panel" class="panel-content">
+            <div class="panel-description">
+              <p>Select from our range of electronic devices or specify your requirements.</p>
+            </div>
+            <div class="common-items">
+              <h3>Common Electronic Devices:</h3>
+              <div class="items-grid">
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="printers"> Printers
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="scanners"> Scanners
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="laptops"> Laptops
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="monitors"> Monitors
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="keyboards"> Keyboards
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="mice"> Computer Mice
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="headphones"> Headphones
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="webcams"> Webcams
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="speakers"> Speakers
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="electronics-item" value="chargers"> Chargers & Cables
+                </label>
+              </div>
+            </div>
+            <div class="custom-item">
+              <h3>Don't see what you need?</h3>
+              <textarea id="custom-electronics" placeholder="Specify other electronic devices you require..." rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Office Equipment Panel -->
+        <div class="panel">
+          <div class="panel-header" onclick="togglePanel('equipment')">
+            <h2>Office Equipment</h2>
+            <span class="panel-toggle">+</span>
+          </div>
+          <div id="equipment-panel" class="panel-content">
+            <div class="panel-description">
+              <p>Choose from our office equipment selection or specify your needs.</p>
+            </div>
+            <div class="common-items">
+              <h3>Common Office Equipment:</h3>
+              <div class="items-grid">
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="desks"> Desks & Tables
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="chairs"> Office Chairs
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="cabinets"> Filing Cabinets
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="shelves"> Shelves & Storage
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="whiteboards"> Whiteboards
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="projectors"> Projectors
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="lamps"> Desk Lamps
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="clocks"> Wall Clocks
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="fans"> Fans
+                </label>
+                <label class="item-checkbox">
+                  <input type="checkbox" name="equipment-item" value="coffee-machines"> Coffee Machines
+                </label>
+              </div>
+            </div>
+            <div class="custom-item">
+              <h3>Don't see what you need?</h3>
+              <textarea id="custom-equipment" placeholder="Specify other office equipment you require..." rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h2>Contact Information</h2>
         <form id="order-form" action="#" method="post">
           <div class="form-group">
             <label for="name">Full Name</label>
@@ -728,6 +1093,22 @@
       }
     }
 
+    // Panel toggle functionality
+    function togglePanel(panelId) {
+      const panel = document.querySelector(`[onclick="togglePanel('${panelId}')"]`).parentElement;
+      const content = document.getElementById(`${panelId}-panel`);
+      
+      // Close all other panels
+      document.querySelectorAll('.panel').forEach(p => {
+        if (p !== panel) {
+          p.classList.remove('active');
+        }
+      });
+      
+      // Toggle current panel
+      panel.classList.toggle('active');
+    }
+
     document.getElementById('category').addEventListener('change', function() {
       var printingOptionsGroup = document.getElementById('printing-options-group');
       var uploadGroup = document.getElementById('design-upload-group');
@@ -768,6 +1149,43 @@
       var designFileInput = document.getElementById('design-file');
       var designFileName = (designFileInput && designFileInput.files && designFileInput.files.length) ? designFileInput.files[0].name : '';
 
+      // Collect selected items from panels
+      var selectedItems = [];
+      
+      // Stationery items
+      var stationeryItems = document.querySelectorAll('input[name="stationery-item"]:checked');
+      if (stationeryItems.length > 0) {
+        selectedItems.push('Stationery: ' + Array.from(stationeryItems).map(cb => cb.value).join(', '));
+      }
+      
+      // Electronics items
+      var electronicsItems = document.querySelectorAll('input[name="electronics-item"]:checked');
+      if (electronicsItems.length > 0) {
+        selectedItems.push('Electronics: ' + Array.from(electronicsItems).map(cb => cb.value).join(', '));
+      }
+      
+      // Equipment items
+      var equipmentItems = document.querySelectorAll('input[name="equipment-item"]:checked');
+      if (equipmentItems.length > 0) {
+        selectedItems.push('Equipment: ' + Array.from(equipmentItems).map(cb => cb.value).join(', '));
+      }
+
+      // Custom items
+      var customStationery = document.getElementById('custom-stationery').value.trim();
+      if (customStationery) {
+        selectedItems.push('Custom Stationery: ' + customStationery);
+      }
+      
+      var customElectronics = document.getElementById('custom-electronics').value.trim();
+      if (customElectronics) {
+        selectedItems.push('Custom Electronics: ' + customElectronics);
+      }
+      
+      var customEquipment = document.getElementById('custom-equipment').value.trim();
+      if (customEquipment) {
+        selectedItems.push('Custom Equipment: ' + customEquipment);
+      }
+
       var message = '';
       message += 'New order from KPS Website\n';
       if (name) message += 'Name: ' + name + '\n';
@@ -775,6 +1193,7 @@
       if (phone) message += 'Phone: ' + phone + '\n';
       if (category) message += 'Category: ' + category + '\n';
       if (printing) message += 'Printing option: ' + printing + '\n';
+      if (selectedItems.length > 0) message += 'Selected Items:\n' + selectedItems.join('\n') + '\n';
       if (quantity) message += 'Quantity: ' + quantity + '\n';
       if (deadline) message += 'Preferred deadline: ' + deadline + '\n';
       if (designFileName) message += 'Design file: ' + designFileName + '\n';

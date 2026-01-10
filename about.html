@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FAQ | KPS</title>
+  <title>About Us | KPS</title>
   <style>
     /* Loading Animation */
     #loading {
@@ -32,7 +32,7 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
+    
     /* General layout */
     * {
       box-sizing: border-box;
@@ -267,99 +267,203 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    /* Main content */
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-right a:hover {
+      color: #ffeb3b;
+    }
+
+    .btn-primary {
+      background: #ffeb3b;
+      color: #007BFF;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #ffd700;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Main Content */
     main {
       flex: 1;
-      padding: 40px 30px;
-      max-width: 900px;
+      padding: 60px 30px;
+      max-width: 1200px;
       margin: 0 auto;
       width: 100%;
     }
 
-    h1 {
-      color: #007BFF;
-      margin-bottom: 10px;
-      font-size: 36px;
-    }
-
-    .intro-text {
-      color: #666;
-      margin-bottom: 40px;
-      font-size: 16px;
-    }
-
-    .faq-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .faq-item {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .faq-item:hover {
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .faq-question {
-      padding: 20px;
-      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
-      color: white;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
+    .about-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
       align-items: center;
-      font-weight: 600;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      user-select: none;
+      margin-bottom: 60px;
     }
 
-    .faq-question:hover {
-      background: linear-gradient(135deg, #0056b3 0%, #003d82 100%);
+    .about-content h1 {
+      font-size: 2.5em;
+      color: #007BFF;
+      margin-bottom: 20px;
+      font-weight: 700;
     }
 
-    .faq-toggle {
-      font-size: 20px;
+    .about-content p {
+      font-size: 1.1em;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .team-image-container {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .team-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
       transition: transform 0.3s ease;
     }
 
-    .faq-question.active .faq-toggle {
-      transform: rotate(180deg);
+    .slide-image-1 {
+      animation: slide1 8s infinite ease-in-out;
     }
 
-    .faq-answer {
-      padding: 0 20px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      background: #f9f9f9;
+    .slide-image-2 {
+      animation: slide2 8s infinite ease-in-out;
+    }
+
+    @keyframes slide1 {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(0); }
+      50% { transform: translateX(-100%); }
+      75% { transform: translateX(-100%); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes slide2 {
+      0% { transform: translateX(100%); }
+      25% { transform: translateX(100%); }
+      50% { transform: translateX(0); }
+      75% { transform: translateX(0); }
+      100% { transform: translateX(100%); }
+    }
+
+    .team-image-container:hover {
+      transform: scale(1.02);
+    }
+
+    .team-section {
+      margin-top: 60px;
+    }
+
+    .section-title {
+      font-size: 2em;
+      color: #007BFF;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .value-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+    }
+
+    .value-card h3 {
+      color: #007BFF;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+
+    .value-card p {
       color: #666;
       line-height: 1.6;
     }
 
-    .faq-answer.active {
-      max-height: 500px;
-      padding: 20px;
-    }
-
     /* Footer */
     footer {
-      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
-      color: white;
       text-align: center;
       padding: 25px;
+      background: linear-gradient(135deg, #0077cc 0%, #0056b3 100%);
+      color: white;
       margin-top: auto;
       box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    footer p {
-      margin: 0;
+    /* Facebook Link Styles */
+    .facebook-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+    
+    .facebook-link:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .facebook-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      filter: brightness(0) invert(1);
+    }
+    
+    .follow-text {
+      font-size: 16px;
     }
 
     /* Responsive */
@@ -391,17 +495,25 @@
         display: none;
       }
 
-      h1 {
-        font-size: 28px;
+      .about-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .about-content h1 {
+        font-size: 1.8em;
       }
 
       main {
-        padding: 20px;
+        padding: 30px 15px;
       }
 
-      .faq-question {
-        font-size: 14px;
-        padding: 15px;
+      .section-title {
+        font-size: 1.6em;
+      }
+
+      .values-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -415,10 +527,6 @@
         font-size: 16px;
         padding: 12px 15px;
       }
-      
-      .faq-item {
-        margin: 0 10px;
-      }
     }
   </style>
 </head>
@@ -426,37 +534,33 @@
   <div id="loading">
     <div class="spinner"></div>
   </div>
-  
-  <div class="background"></div>
 
+  <div class="background"></div>
   <div class="content-overlay">
-    <!-- Mobile Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-    
-    <!-- Mobile Navigation Menu -->
     <nav class="mobile-nav" id="mobileNav">
       <a href="index.html" class="nav-link">Home</a>
       <a href="services.html" class="nav-link">Products / Services</a>
-      <a href="about.html" class="nav-link">About Us</a>
+      <a href="about.html" class="nav-link active">About Us</a>
       <a href="order.html" class="nav-link">Order/Request Quote</a>
       <a href="blog.html" class="nav-link">Blog/News</a>
-      <a href="faq.html" class="nav-link active">FAQ</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
       <a href="ContactUs.html" class="nav-link">Contact Us</a>
     </nav>
 
+    <!-- Header -->
     <header>
-      <img src="images/LOGO.png" alt="KPS Logo" class="logo">
+      <img src="images/LOGO.png" alt="Logo" class="logo">
       
       <div class="nav-container">
-        <div class="main-nav">
+        <nav class="main-nav" id="main-nav">
           <a href="index.html" class="nav-link">Home</a>
           <a href="services.html" class="nav-link">Products / Services</a>
-          <a href="about.html" class="nav-link">About Us</a>
+          <a href="about.html" class="nav-link active">About Us</a>
           <a href="order.html" class="nav-link">Order/Request Quote</a>
           <a href="blog.html" class="nav-link">Blog/News</a>
-          <a href="faq.html" class="nav-link active">FAQ</a>
+          <a href="faq.html" class="nav-link">FAQ</a>
           <a href="ContactUs.html" class="nav-link">Contact Us</a>
-        </div>
+        </nav>
       </div>
       
       <!-- Hamburger Menu Button -->
@@ -467,115 +571,85 @@
       </button>
     </header>
 
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Main Content -->
     <main>
-      <h1>Frequently Asked Questions</h1>
-      <p class="intro-text">Find answers to common questions about our products, services, and ordering process. Can't find what you're looking for? Feel free to contact us!</p>
+      <!-- About Section -->
+      <section class="about-container">
+        <div class="about-content">
+          <h1>About Our Team</h1>
+          <p>
+            At KPS, we take pride in our dedicated team of professionals committed to delivering exceptional printing and production services. With years of combined experience in the industry, our team brings expertise, creativity, and attention to detail to every project we undertake.
+          </p>
+          <p>
+            Our team is composed of skilled designers, production managers, and customer service specialists who work collaboratively to ensure that your vision becomes reality. We believe in building long-lasting relationships with our clients through trust, reliability, and outstanding service quality.
+          </p>
+          <p>
+            Whether you need corporate branding materials, promotional items, or large-scale production runs, our team has the knowledge and resources to exceed your expectations. We stay updated with the latest industry trends and technologies to provide you with cutting-edge solutions.
+          </p>
+        </div>
+        <div class="team-image-container">
+          <img src="images/Team.jpg" alt="KPS Team" class="team-image slide-image-1" />
+          <img src="images/Team 1.jpg" alt="KPS Team" class="team-image slide-image-2" />
+        </div>
+      </section>
 
-      <div class="faq-container">
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What products and services does KPS offer?</span>
-            <span class="faq-toggle">▼</span>
+      <!-- Values Section -->
+      <section class="team-section">
+        <h2 class="section-title">Our Core Values</h2>
+        <div class="values-grid">
+          <div class="value-card">
+            <h3>Quality First</h3>
+            <p>
+              We maintain the highest standards of quality in every product and service we deliver. Our rigorous quality control processes ensure that each item meets or exceeds client expectations.
+            </p>
           </div>
-          <div class="faq-answer">
-            KPS offers a comprehensive range of printing and production services including digital printing, offset printing, large format printing, promotional products, packaging solutions, and custom design services. Visit our Products/Services page for detailed information about each offering.
+          <div class="value-card">
+            <h3>Customer Focused</h3>
+            <p>
+              Your satisfaction is our top priority. We listen to your needs, understand your goals, and deliver solutions tailored specifically to your requirements and budget.
+            </p>
+          </div>
+          <div class="value-card">
+            <h3>Innovation</h3>
+            <p>
+              We continuously invest in new technologies and methodologies to offer you the most advanced printing and production solutions available in the market.
+            </p>
+          </div>
+          <div class="value-card">
+            <h3>Reliability</h3>
+            <p>
+              You can depend on us to deliver your projects on time, every time. Our proven track record demonstrates our commitment to meeting deadlines and promises.
+            </p>
+          </div>
+          <div class="value-card">
+            <h3>Professionalism</h3>
+            <p>
+              Our team operates with the highest standards of professionalism, integrity, and ethical business practices in all our interactions.
+            </p>
+          </div>
+          <div class="value-card">
+            <h3>Partnership</h3>
+            <p>
+              We view our clients as partners. We work together to achieve mutual success and build relationships that grow stronger over time.
+            </p>
           </div>
         </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>How do I place an order?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            You can place an order by navigating to our Order/Request Quote page and filling out the form with your project details. Alternatively, you can contact us directly via phone or email, and our team will assist you in placing your order and providing a custom quote.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What is your turnaround time?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            Turnaround times vary depending on the complexity and volume of your project. Standard orders typically take 3-5 business days, while rush services may be available. Contact us with your specific project details for an accurate timeline.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>Do you offer design services?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            Yes! We offer professional design services to help bring your ideas to life. Our experienced design team can work with you from concept to final print. Please contact us to discuss your design needs and receive a quote.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What file formats do you accept?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            We accept most common file formats including PDF, JPEG, PNG, TIFF, EPS, and AI. For best results, we recommend providing high-resolution files (300 DPI) in PDF or vector format. If you have questions about your specific file format, please reach out to our team.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What are your pricing options?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            Pricing depends on the specific product, quantity, materials, and services required. We offer competitive rates and volume discounts. Use our Order/Request Quote page to submit your project details, and we'll provide a customized quote for your specific needs.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>Do you offer bulk orders or corporate packages?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            Yes, we specialize in bulk orders and offer attractive pricing for large quantities. We also provide corporate packages for promotional items and branded materials. Contact us to discuss your bulk order requirements and receive special pricing.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What payment methods do you accept?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            We accept multiple payment methods including credit cards, bank transfers, and checks. Payment terms may be available for established accounts. Contact our team to discuss payment options that work best for your situation.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>How can I track my order?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            Once your order is placed, you'll receive a confirmation email with a tracking number. You can use this number to check the status of your order at any time. Our team is also available to provide updates upon request.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <span>What is your quality guarantee?</span>
-            <span class="faq-toggle">▼</span>
-          </div>
-          <div class="faq-answer">
-            We guarantee high-quality work on every project. Our team performs thorough quality checks at every stage of production. If you're not satisfied with your order, please contact us within 30 days, and we'll work to make it right.
-          </div>
-        </div>
-      </div>
+      </section>
     </main>
 
+    <!-- Footer -->
     <footer>
-      <p>&copy; 2026 KPS. All rights reserved.</p>
+      <a href="https://www.facebook.com/profile.php?id=100083058916316" 
+         target="_blank" 
+         class="facebook-link animate-on-scroll">
+        <svg class="facebook-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        <span class="follow-text">Follow Us on Facebook</span>
+      </a>
+      <div>&copy; 2026 KPS. All rights reserved.</div>
     </footer>
   </div>
 
@@ -625,14 +699,14 @@
 
     // Set active nav link based on current page
     function setActiveNavLink() {
-      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+      const currentPage = window.location.pathname.split('/').pop() || 'about.html';
       const navLinks = document.querySelectorAll('.nav-link');
       
       navLinks.forEach(link => {
         const linkHref = link.getAttribute('href');
         if (linkHref === currentPage || 
-            (currentPage === '' && linkHref === 'index.html') ||
-            (currentPage === '/' && linkHref === 'index.html')) {
+            (currentPage === '' && linkHref === 'about.html') ||
+            (currentPage === '/' && linkHref === 'about.html')) {
           link.classList.add('active');
         } else {
           link.classList.remove('active');
@@ -643,35 +717,9 @@
     // Call when page loads
     window.addEventListener('DOMContentLoaded', setActiveNavLink);
 
-    // FAQ Toggle functionality
-    var faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(function(question) {
-      question.addEventListener('click', function() {
-        var answer = this.nextElementSibling;
-        var isActive = answer.classList.contains('active');
-        
-        // Close all other FAQs
-        document.querySelectorAll('.faq-answer').forEach(function(faq) {
-          faq.classList.remove('active');
-        });
-        document.querySelectorAll('.faq-question').forEach(function(q) {
-          q.classList.remove('active');
-        });
-        
-        // Toggle current FAQ
-        if (!isActive) {
-          answer.classList.add('active');
-          question.classList.add('active');
-        }
-      });
-    });
-
-    // Hide loader when page loads
+    // Loading screen
     window.addEventListener('load', function() {
-      var loading = document.getElementById('loading');
-      if (loading) {
-        loading.style.display = 'none';
-      }
+      document.getElementById('loading').style.display = 'none';
     });
   </script>
 </body>
